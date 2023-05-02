@@ -1,51 +1,30 @@
-from __future__ import print_function
+from entities.gmail.Gmail import Gmail
 
-import os.path
+def menu():
+    print("1. Get email labels")
+    print("2. Get emails")
+    print("3. Search for emails")
+    print("4. Quit")
 
-from google.auth.transport.requests import Request
-from google.oauth2.credentials import Credentials
-from google_auth_oauthlib.flow import InstalledAppFlow
-from googleapiclient.discovery import build
-from googleapiclient.errors import HttpError
+if __name__ == "__main__":
+    while True:
+        menu()
+        #choice = input("Input your choice: ")
+        choice = "2"
 
-# If modifying these scopes, delete the file token.json.
-SCOPES = ['https://www.googleapis.com/auth/gmail.readonly']
-
-
-"""Shows basic usage of the Gmail API.
-Lists the user's Gmail labels.
-"""
-creds = None
-# The file token.json stores the user's access and refresh tokens, and is
-# created automatically when the authorization flow completes for the first
-# time.
-if os.path.exists('token.json'):
-    creds = Credentials.from_authorized_user_file('token.json', SCOPES)
-# If there are no (valid) credentials available, let the user log in.
-if not creds or not creds.valid:
-    if creds and creds.expired and creds.refresh_token:
-        creds.refresh(Request())
-    else:
-        flow = InstalledAppFlow.from_client_secrets_file(
-            'credentials.json', SCOPES)
-        creds = flow.run_local_server(port=0)
-    # Save the credentials for the next run
-    with open('token.json', 'w') as token:
-        token.write(creds.to_json())
-
-try:
-    # Call the Gmail API
-    service = build('gmail', 'v1', credentials=creds)
-    results = service.users().labels().list(userId='me').execute()
-    labels = results.get('labels', [])
-
-    if not labels:
-        print('No labels found.')
-    else:    
-        print('Labels:')
-        for label in labels:
-            print(label['name'])
-
-except HttpError as error:
-    # TODO(developer) - Handle errors from gmail API.
-    print(f'An error occurred: {error}')
+        if choice == "1":
+            gmail = Gmail()
+            gmail.getLabels()
+        elif choice == "2":
+            gmail = Gmail()
+            gmail.getEmails(2)
+            break
+        elif choice == "3":
+            gmail = Gmail()
+            gmail.searchEmails(["application", "CKAD", "april"], 5)
+            break
+        elif choice == "4":
+            print("Goodbye!")
+            break
+        else:
+            print("Invalid choice. Please try again.")
