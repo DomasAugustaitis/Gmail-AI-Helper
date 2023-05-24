@@ -1,15 +1,31 @@
+from entities.gmail.Gmail import Gmail
 from controllers.GmailController import GmailController
 
 def menu():
-    print("1. Option 1")
-    print("2. Option 2")
-    print("3. Option 3")
+    print("1. Get email labels")
+    print("2. Get emails")
+    print("3. Search for emails")
     print("4. Quit")
 
-def main():
-    gmailController = GmailController()
-    #gmailController.getTitles()
-    gmailController.fetch_emails(7)
-
 if __name__ == "__main__":
-    main()
+    while True:
+        menu()
+        #choice = input("Input your choice: ")
+        choice = "2"
+
+        if choice == "1":
+            gmail = Gmail()
+            gmail.getLabels()
+        elif choice == "2":
+            gmail = Gmail()
+            gmail.getEmails(2)
+            break
+        elif choice == "3":
+            gmail = Gmail()
+            gmail.searchEmails(["application", "CKAD", "april"], 5)
+            break
+        elif choice == "4":
+            print("Goodbye!")
+            break
+        else:
+            print("Invalid choice. Please try again.")
