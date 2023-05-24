@@ -1,4 +1,5 @@
 from entities.gmail.Gmail import Gmail
+from controllers.GmailController import GmailController
 
 def menu():
     print("1. Get email labels")
